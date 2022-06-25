@@ -12,4 +12,7 @@
  (name jansson)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends))
+ (depends
+   ctypes
+   (alcotest :with-test)
+   (ezjsonm :with-test)))
