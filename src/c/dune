@@ -9,9 +9,9 @@
   (external_library_name jansson)
   (build_flags_resolver
    (vendored
-    (c_flags :standard -I .)
+    (c_flags :standard -I . -I src/c)
     (c_library_flags :standard)))
-  (deps jansson.h)
+  (deps jansson.h jansson_config.h)
   (headers
    (include "jansson.h"))
   (type_description
@@ -29,7 +29,7 @@
 (rule
  (deps
   (source_tree %{project_root}/vendor/jansson))
- (targets libjansson.a dlljansson.so jansson.h)
+ (targets libjansson.a dlljansson.so jansson.h jansson_config.h)
  (enabled_if
   (= %{system} macosx))
  (action
@@ -43,16 +43,17 @@
       (run ./configure)
       (setenv
        CFLAGS
-       "%{ocaml-config:ocamlc_cflags}"
+       "%{ocaml-config:ocamlc_cflags} -fPIC"
        (run make -j))))
     (copy %{project_root}/vendor/jansson/src/jansson.h jansson.h)
+    (copy %{project_root}/vendor/jansson/src/jansson_config.h jansson_config.h)
     (copy %{project_root}/vendor/jansson/src/.libs/libjansson%{ext_lib} libjansson.a)
     (copy %{project_root}/vendor/jansson/src/.libs/libjansson.dylib dlljansson.so)))))
 
 (rule
  (deps
   (source_tree %{project_root}/vendor/jansson))
- (targets libjansson.a dlljansson.so jansson.h)
+ (targets libjansson.a dlljansson.so jansson.h jansson_config.h)
  (enabled_if
   (<> %{system} macosx))
  (action
@@ -61,7 +62,7 @@
     (chdir
      %{project_root}/vendor/jansson
      (progn
-      (run autoreconf -i)
+      (run autoreconf -if)
       (run mkdir -p install)
       (run ./configure)
       (setenv
@@ -69,5 +70,6 @@
        "%{ocaml-config:ocamlc_cflags}"
        (run make -j))))
     (copy %{project_root}/vendor/jansson/src/jansson.h jansson.h)
+    (copy %{project_root}/vendor/jansson/src/jansson_config.h jansson_config.h)
     (copy %{project_root}/vendor/jansson/src/.libs/libjansson%{ext_lib} libjansson.a)
     (copy %{project_root}/vendor/jansson/src/.libs/libjansson%{ext_dll} dlljansson.so)))))
