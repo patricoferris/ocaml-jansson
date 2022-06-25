@@ -25,7 +25,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
     module Number = struct
       let is_number = foreign "json_is_number" (ptr T.Json.t @-> returning bool)
-      let int = foreign "json_integer" (llong @-> returning @@ ptr T.Json.t)
+      let int = foreign "json_integer" (int @-> returning @@ ptr T.Json.t)
       let to_int = foreign "json_integer_value" (ptr T.Json.t @-> returning llong)
 
       let float = foreign "json_real" (double @-> returning @@ ptr T.Json.t)

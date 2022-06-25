@@ -8,7 +8,7 @@ type t =
   Ctypes_static.ptr
 
 let equal = F.Json.equal
-let dump = F.Json.dump
+let dump v = F.Json.dump v 0
 let null = F.Json.null
 let is_null = F.Json.is_null
 let is_bool = F.Json.is_bool

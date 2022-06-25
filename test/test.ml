@@ -1,6 +1,6 @@
 let jansson =
   Alcotest.testable
-    (fun ppf v -> Fmt.pf ppf "%s" (Jansson.dump v 0))
+    (fun ppf v -> Fmt.pf ppf "%s" (Jansson.dump v))
     Jansson.equal
 
 module Ezjsonm_tests = struct

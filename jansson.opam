@@ -10,6 +10,9 @@ doc: "https://ocaml.org/p/jansson"
 bug-reports: "https://github.com/patricoferris/ocaml-jansson/issues"
 depends: [
   "dune" {>= "3.0"}
+  "ctypes"
+  "alcotest" {with-test}
+  "ezjsonm" {with-test}
   "odoc" {with-doc}
 ]
 build: [
