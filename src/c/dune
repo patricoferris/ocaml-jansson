@@ -24,10 +24,14 @@
   (generated_types Types_generated)
   (generated_entry_point C)))
 
+; https://github.com/ocaml/dune/issues/4948 ergh...
+
 (rule
  (deps
   (source_tree %{project_root}/vendor/jansson))
  (targets libjansson.a dlljansson.so jansson.h)
+ (enabled_if
+  (= %{system} macosx))
  (action
   (no-infer
    (progn
@@ -42,5 +46,28 @@
        "%{ocaml-config:ocamlc_cflags}"
        (run make -j))))
     (copy %{project_root}/vendor/jansson/src/jansson.h jansson.h)
-    (copy %{project_root}/vendor/jansson/src/.libs/libjansson.a libjansson.a)
+    (copy %{project_root}/vendor/jansson/src/.libs/libjansson%{ext_lib} libjansson.a)
     (copy %{project_root}/vendor/jansson/src/.libs/libjansson.dylib dlljansson.so)))))
+
+(rule
+ (deps
+  (source_tree %{project_root}/vendor/jansson))
+ (targets libjansson.a dlljansson.so jansson.h)
+ (enabled_if
+  (<> %{system} macosx))
+ (action
+  (no-infer
+   (progn
+    (chdir
+     %{project_root}/vendor/jansson
+     (progn
+      (run autoreconf -i)
+      (run mkdir -p install)
+      (run ./configure)
+      (setenv
+       CFLAGS
+       "%{ocaml-config:ocamlc_cflags}"
+       (run make -j))))
+    (copy %{project_root}/vendor/jansson/src/jansson.h jansson.h)
+    (copy %{project_root}/vendor/jansson/src/.libs/libjansson%{ext_lib} libjansson.a)
+    (copy %{project_root}/vendor/jansson/src/.libs/libjansson%{ext_dll} dlljansson.so)))))
