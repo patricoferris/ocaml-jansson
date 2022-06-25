@@ -14,5 +14,6 @@
  (description "A longer description")
  (depends
    ctypes
+   conf-autoconf
    (alcotest :with-test)
    (ezjsonm :with-test)))
