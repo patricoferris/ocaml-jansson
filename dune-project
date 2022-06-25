@@ -15,5 +15,7 @@
  (depends
    ctypes
    conf-autoconf
+   conf-libtool
+   conf-automake
    (alcotest :with-test)
    (ezjsonm :with-test)))

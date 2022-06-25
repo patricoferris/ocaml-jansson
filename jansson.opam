@@ -12,6 +12,8 @@ depends: [
   "dune" {>= "3.0"}
   "ctypes"
   "conf-autoconf"
+  "conf-libtool"
+  "conf-automake"
   "alcotest" {with-test}
   "ezjsonm" {with-test}
   "odoc" {with-doc}
