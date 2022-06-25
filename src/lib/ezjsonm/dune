@@ -1,0 +1,5 @@
+(library
+ (name ezjsonm_conv)
+ (public_name jansson.ezjsonm)
+ (optional)
+ (libraries jansson ezjsonm))

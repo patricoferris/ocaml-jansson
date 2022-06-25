@@ -1,0 +1,46 @@
+(library
+ (name jansson_c)
+ (public_name jansson.c)
+ (library_flags -linkall)
+ (foreign_archives jansson)
+ (flags
+  (:standard -w -9-27))
+ (ctypes
+  (external_library_name jansson)
+  (build_flags_resolver
+   (vendored
+    (c_flags :standard -I .)
+    (c_library_flags :standard)))
+  (deps jansson.h)
+  (headers
+   (include "jansson.h"))
+  (type_description
+   (instance Type)
+   (functor Type_description))
+  (function_description
+   (concurrency sequential)
+   (instance Functions)
+   (functor Function_description))
+  (generated_types Types_generated)
+  (generated_entry_point C)))
+
+(rule
+ (deps
+  (source_tree %{project_root}/vendor/jansson))
+ (targets libjansson.a dlljansson.so jansson.h)
+ (action
+  (no-infer
+   (progn
+    (chdir
+     %{project_root}/vendor/jansson
+     (progn
+      (run autoreconf -i)
+      (run mkdir -p install)
+      (run ./configure)
+      (setenv
+       CFLAGS
+       "%{ocaml-config:ocamlc_cflags}"
+       (run make -j))))
+    (copy %{project_root}/vendor/jansson/src/jansson.h jansson.h)
+    (copy %{project_root}/vendor/jansson/src/.libs/libjansson.a libjansson.a)
+    (copy %{project_root}/vendor/jansson/src/.libs/libjansson.dylib dlljansson.so)))))
