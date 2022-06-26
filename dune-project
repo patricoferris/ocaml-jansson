@@ -14,8 +14,6 @@
  (description "A longer description")
  (depends
    ctypes
-   conf-autoconf
-   conf-libtool
-   conf-automake
+   conf-cmake
    (alcotest :with-test)
-   (ezjsonm :with-test)))
+   (ezjsonm (and (>= 1.1.0) :with-test))))

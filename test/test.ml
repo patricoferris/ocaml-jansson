@@ -19,7 +19,7 @@ module Ezjsonm_tests = struct
     let expect = `A [ `String "Alice"; `Float 42.; `Bool true; `Null ] in
     let jansson = Ezjsonm_conv.of_ezjsonm expect in
     let test = Ezjsonm_conv.to_ezjsonm jansson in
-    Alcotest.check ezjsonm "same arrat" expect test
+    Alcotest.check ezjsonm "same array" expect test
 
   let test_inverse () =
     let expect =

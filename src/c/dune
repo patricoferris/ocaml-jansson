@@ -9,9 +9,9 @@
   (external_library_name jansson)
   (build_flags_resolver
    (vendored
-    (c_flags :standard -I .)
+    (c_flags :standard -I . -I src/c)
     (c_library_flags :standard)))
-  (deps jansson.h)
+  (deps jansson.h jansson_config.h)
   (headers
    (include "jansson.h"))
   (type_description
@@ -24,23 +24,88 @@
   (generated_types Types_generated)
   (generated_entry_point C)))
 
+; https://github.com/ocaml/dune/issues/4948 ergh...
+
 (rule
  (deps
   (source_tree %{project_root}/vendor/jansson))
- (targets libjansson.a dlljansson.so jansson.h)
+ (targets libjansson.a dlljansson.so jansson.h jansson_config.h)
+ (enabled_if
+  (= %{system} macosx))
  (action
   (no-infer
    (progn
     (chdir
      %{project_root}/vendor/jansson
      (progn
-      (run autoreconf -i)
-      (run mkdir -p install)
-      (run ./configure)
-      (setenv
-       CFLAGS
-       "%{ocaml-config:ocamlc_cflags}"
-       (run make -j))))
-    (copy %{project_root}/vendor/jansson/src/jansson.h jansson.h)
-    (copy %{project_root}/vendor/jansson/src/.libs/libjansson.a libjansson.a)
-    (copy %{project_root}/vendor/jansson/src/.libs/libjansson.dylib dlljansson.so)))))
+      ; (run autoreconf -if)
+      (run mkdir -p build)
+      (chdir
+       %{project_root}/vendor/jansson/build
+       (progn
+        (run cmake .. -DJANSSON_BUILD_SHARED_LIBS=1)
+        (setenv
+         CFLAGS
+         "%{ocaml-config:ocamlc_cflags}"
+         (run make -j))
+        (copy
+         %{project_root}/vendor/jansson/build/lib/libjansson.dylib
+         %{project_root}/src/c/dlljansson.so)
+        (run rm -rf ./*)
+        (run make clean)
+        (run cmake .. -DJANSSON_BUILD_SHARED_LIBS=0)
+        (setenv
+         CFLAGS
+         "%{ocaml-config:ocamlc_cflags}"
+         (run make -j))
+        (copy
+         %{project_root}/vendor/jansson/build/include/jansson.h
+         %{project_root}/src/c/jansson.h)
+        (copy
+         %{project_root}/vendor/jansson/build/include/jansson_config.h
+         %{project_root}/src/c/jansson_config.h)
+        (copy
+         %{project_root}/vendor/jansson/build/lib/libjansson%{ext_lib}
+         %{project_root}/src/c/libjansson.a)))))))))
+
+(rule
+ (deps
+  (source_tree %{project_root}/vendor/jansson))
+ (targets libjansson.a dlljansson.so jansson.h jansson_config.h)
+ (enabled_if
+  (<> %{system} macosx))
+ (action
+  (no-infer
+   (progn
+    (chdir
+     %{project_root}/vendor/jansson
+     (progn
+      ; (run autoreconf -if)
+      (run mkdir -p build)
+      (chdir
+       %{project_root}/vendor/jansson/build
+       (progn
+        (run cmake .. -DJANSSON_BUILD_SHARED_LIBS=1)
+        (setenv
+         CFLAGS
+         "%{ocaml-config:ocamlc_cflags}"
+         (run make -j))
+        (copy
+         %{project_root}/vendor/jansson/build/lib/libjansson%{ext_dll}
+         %{project_root}/src/c/dlljansson.so)
+        (run rm -rf ./*)
+        (run make clean)
+        (run cmake .. -DJANSSON_BUILD_SHARED_LIBS=0)
+        (setenv
+         CFLAGS
+         "%{ocaml-config:ocamlc_cflags}"
+         (run make -j))
+        (copy
+         %{project_root}/vendor/jansson/build/include/jansson.h
+         %{project_root}/src/c/jansson.h)
+        (copy
+         %{project_root}/vendor/jansson/build/include/jansson_config.h
+         %{project_root}/src/c/jansson_config.h)
+        (copy
+         %{project_root}/vendor/jansson/build/lib/libjansson%{ext_lib}
+         %{project_root}/src/c/libjansson.a)))))))))
