@@ -13,7 +13,7 @@ depends: [
   "ctypes"
   "conf-cmake"
   "alcotest" {with-test}
-  "ezjsonm" {with-test}
+  "ezjsonm" {>= "1.1.0" & with-test}
   "odoc" {with-doc}
 ]
 build: [

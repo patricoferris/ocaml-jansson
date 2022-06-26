@@ -16,4 +16,4 @@
    ctypes
    conf-cmake
    (alcotest :with-test)
-   (ezjsonm :with-test)))
+   (ezjsonm (and (>= 1.1.0) :with-test))))
