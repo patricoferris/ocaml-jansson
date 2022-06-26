@@ -1,6 +1,7 @@
 (library
  (name jansson_c)
  (public_name jansson.c)
+ (install_c_headers jansson.h jansson_config.h)
  (library_flags -linkall)
  (foreign_archives jansson)
  (flags
