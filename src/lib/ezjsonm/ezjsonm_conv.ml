@@ -1,3 +1,13 @@
+module List = struct
+  include List
+
+  let init n f =
+    let rec aux acc i =
+      if i >= n then List.rev acc else aux (f i :: acc) (i + 1)
+    in
+    aux [] 0
+end
+
 let rec to_ezjsonm : Jansson.t -> Ezjsonm.value = function
   | t when Jansson.is_null t -> `Null
   | t when Jansson.is_bool t -> `Bool (Jansson.to_bool t)
