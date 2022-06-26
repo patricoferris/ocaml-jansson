@@ -11,9 +11,7 @@ bug-reports: "https://github.com/patricoferris/ocaml-jansson/issues"
 depends: [
   "dune" {>= "3.0"}
   "ctypes"
-  "conf-autoconf"
-  "conf-libtool"
-  "conf-automake"
+  "conf-cmake"
   "alcotest" {with-test}
   "ezjsonm" {with-test}
   "odoc" {with-doc}
