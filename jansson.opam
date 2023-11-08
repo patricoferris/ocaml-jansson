@@ -9,7 +9,7 @@ homepage: "https://github.com/patricoferris/ocaml-jansson"
 doc: "https://ocaml.org/p/jansson"
 bug-reports: "https://github.com/patricoferris/ocaml-jansson/issues"
 depends: [
-  "dune" {>= "3.0"}
+  "dune" {>= "3.11"}
   "ctypes"
   "conf-cmake"
   "alcotest" {with-test}

@@ -1,5 +1,5 @@
-(lang dune 3.0)
-(using ctypes 0.1)
+(lang dune 3.11)
+(using ctypes 0.3)
 (name jansson)
 (generate_opam_files true)
 (source
