@@ -31,4 +31,3 @@ build: [
   ]
 ]
 dev-repo: "git+https://github.com/patricoferris/ocaml-jansson.git"
-available: arch != "arm32" & arch != "x86_32"
