@@ -10,10 +10,10 @@ doc: "https://ocaml.org/p/jansson"
 bug-reports: "https://github.com/patricoferris/ocaml-jansson/issues"
 depends: [
   "dune" {>= "3.11"}
-  "ctypes"
+  "ctypes" {>= "0.21.1"}
   "conf-cmake"
-  "alcotest" {with-test}
-  "ezjsonm" {>= "1.1.0" & with-test}
+  "alcotest" {with-test & >= "1.7.0"}
+  "ezjsonm" {>= "1.1.0"}
   "odoc" {with-doc}
 ]
 build: [
@@ -31,3 +31,4 @@ build: [
   ]
 ]
 dev-repo: "git+https://github.com/patricoferris/ocaml-jansson.git"
+available: arch != "arm" & arch != "x86_32"

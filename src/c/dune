@@ -70,11 +70,11 @@
          %{project_root}/src/c/libjansson.a)))))))))
 
 (install
-  (section stublibs)
-  (files
-    (dlljansson.so as libjansson.so)
-    (dlljansson.so as libjansson.so.4)
-    (dlljansson.so as libjansson.so.4.12.0)))
+ (section stublibs)
+ (files
+  (dlljansson.so as libjansson.so)
+  (dlljansson.so as libjansson.so.4)
+  (dlljansson.so as libjansson.so.4.12.0)))
 
 (rule
  (deps

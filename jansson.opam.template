@@ -1,0 +1,1 @@
+available: arch != "arm" & arch != "x86_32"
